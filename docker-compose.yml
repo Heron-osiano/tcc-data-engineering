@@ -2,6 +2,8 @@ version: "3.8"
 
 x-airflow-common: &airflow-common
   image: ${AIRFLOW_IMAGE}
+  env_file:
+    - .env
   environment: &airflow-env
     AIRFLOW__CORE__EXECUTOR: LocalExecutor
     AIRFLOW__DATABASE__SQL_ALCHEMY_CONN: postgresql+psycopg2://${POSTGRES_USER}:${POSTGRES_PASSWORD}@postgres/${POSTGRES_DB}
@@ -11,12 +13,14 @@ x-airflow-common: &airflow-common
     AIRFLOW__API__AUTH_BACKENDS: "airflow.api.auth.backend.basic_auth"
     AIRFLOW__CORE__DEFAULT_TIMEZONE: America/Sao_Paulo
     _PIP_ADDITIONAL_REQUIREMENTS: "-r /opt/airflow/requirements.txt"
+    PYTHONPATH: /opt/airflow/ingestion
 
   volumes:
     - ./airflow/dags:/opt/airflow/dags
     - ./airflow/logs:/opt/airflow/logs
     - ./airflow/plugins:/opt/airflow/plugins
     - ./airflow/requirements.txt:/opt/airflow/requirements.txt
+    - ./ingestion:/opt/airflow/ingestion
 
   user: "${AIRFLOW_UID}:${AIRFLOW_GID}"
   depends_on:
@@ -38,10 +42,6 @@ services:
       interval: 10s
       retries: 5
       start_period: 10s
-    restart: unless-stopped
-
-  redis:
-    image: redis:7
     restart: unless-stopped
 
   airflow-init:
