@@ -115,12 +115,12 @@ class MeliOrdersClient:
 # Função principal
 # ---------------------------------------------------------------------------
 
-def run(execution_date: Optional[datetime] = None, **kwargs) -> dict:
+def run(**kwargs) -> dict:
     """
     Ponto de entrada do pipeline de orders.
     Pode ser chamado pelo Airflow ou diretamente.
     """
-    now = execution_date or datetime.now(timezone.utc)
+    now = datetime.now(timezone.utc)
     log.info(f"▶ Iniciando ingestão de orders | execution_date={now.isoformat()}")
 
     # 1. Autenticação — valida o token do S3 e renova se necessário

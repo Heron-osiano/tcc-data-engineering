@@ -153,12 +153,12 @@ class MeliShipmentsClient:
 # Função principal
 # ---------------------------------------------------------------------------
 
-def run(execution_date: Optional[datetime] = None, **kwargs) -> dict:
+def run(**kwargs) -> dict:
     """
     Ponto de entrada do pipeline de shipments.
     Deve rodar APÓS o meli_orders_to_s3 do mesmo dia.
     """
-    now = execution_date or datetime.now(timezone.utc)
+    now = datetime.now(timezone.utc)
     log.info(f"▶ Iniciando ingestão de shipments | execution_date={now.isoformat()}")
 
     # 1. Autenticação
