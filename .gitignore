@@ -11,3 +11,6 @@ outros/
 
 .tests/
 tests/
+
+.airflow/logs/
+airflow/logs/
