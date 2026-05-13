@@ -22,6 +22,7 @@ import json
 import logging
 import os
 from datetime import datetime, timezone
+import pytz
 from typing import Optional
 
 import boto3
@@ -158,7 +159,8 @@ def run(**kwargs) -> dict:
     Ponto de entrada do pipeline de shipments.
     Deve rodar APÓS o meli_orders_to_s3 do mesmo dia.
     """
-    now = datetime.now(timezone.utc)
+    brasilia = pytz.timezone("America/Sao_Paulo")
+    now      = datetime.now(brasilia)
     log.info(f"▶ Iniciando ingestão de shipments | execution_date={now.isoformat()}")
 
     # 1. Autenticação

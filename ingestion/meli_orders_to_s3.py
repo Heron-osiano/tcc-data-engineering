@@ -14,6 +14,7 @@ Pode ser rodado:
 import logging
 import os
 from datetime import datetime, timedelta, timezone
+import pytz
 from typing import Optional
 
 import requests
@@ -120,7 +121,8 @@ def run(**kwargs) -> dict:
     Ponto de entrada do pipeline de orders.
     Pode ser chamado pelo Airflow ou diretamente.
     """
-    now = datetime.now(timezone.utc)
+    brasilia = pytz.timezone("America/Sao_Paulo")
+    now      = datetime.now(brasilia)
     log.info(f"▶ Iniciando ingestão de orders | execution_date={now.isoformat()}")
 
     # 1. Autenticação — valida o token do S3 e renova se necessário
